@@ -1,66 +1,96 @@
-import { App, LogLevel } from '@slack/bolt'
-import { TextLintEngine } from 'textlint'
+import { App, LogLevel, KnownBlock, Block } from '@slack/bolt'
+import { TextFixEngine } from 'textlint'
 import * as path from 'path'
 require('dotenv').config()
 
-const engine = new TextLintEngine({
-  configFile: path.join(__dirname, '../.textlintrc.json'),
-})
+import formatResults from './utils/formatResults'
 
-const formatResults = (results: any) => {
-  let output = '```\n'
-  const messages = results[0].messages
-  for (let i = 0; i < messages.length; i++) {
-    const msg = messages[i]
-    const msgText = `${msg.line}行目：${msg.message}\n`
-    output += msgText
-  }
-  output += '```'
+type Blocks = (KnownBlock | Block)[]
 
-  return output
-}
-
-// Initializes your app with your bot token and signing secret
+// アプリの初期化
 const app = new App({
   logLevel: LogLevel.DEBUG,
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
 })
 
-app.message('hello', async ({ message, say }) => {
-  // say() sends a message to the channel where the event was triggered
-  await say(`こんちは <@${message}>!`)
+// Textlintの初期化
+const engine = new TextFixEngine({
+  configFile: path.join(__dirname, '../.textlintrc.json'),
 })
 
+// メンション（@textlint）によるlint実行
 app.event('app_mention', async ({ event, context }) => {
-  let blockMessage = [
+  let blockMessage: Blocks = [
     {
       type: 'section',
-      text: { type: 'plain_text', text: 'エラーなさそう。' },
+      text: {
+        type: 'mrkdwn',
+        text: '文書チェックが完了しました！',
+      },
+    },
+    {
+      type: 'divider',
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*文書チェック結果:*',
+      },
     },
   ]
 
   try {
-    const lintResults = await engine.executeOnText(event.text)
-    if (engine.isErrorResults(lintResults)) {
-      let output = ''
-      output = 'エラーが見つかりました。\n\n'
-      output += formatResults(lintResults)
-
+    const fixResults = await engine.executeOnText(event.text)
+    if (engine.isErrorResults(fixResults)) {
       blockMessage = [
+        ...blockMessage,
         {
           type: 'section',
-          text: { type: 'mrkdwn', text: output },
+          text: { type: 'mrkdwn', text: formatResults(fixResults) },
+        },
+        {
+          type: 'divider',
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: '*自動修正文書の提案:*',
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: fixResults[0].output,
+          },
+        },
+        {
+          type: 'context',
+          elements: [
+            {
+              type: 'mrkdwn',
+              text:
+                '※この文書は<https://github.com/kufu/textlint-rule-preset-smarthr|textlint-rule-preset-smarthr>のルールに基づき、自動修正しています。',
+            },
+          ],
         },
       ]
+    } else {
+      blockMessage.push({
+        type: 'section',
+        text: { type: 'mrkdwn', text: 'エラーは見つかりませんでした:+1:' },
+      })
     }
 
     app.client.chat.postMessage({
       token: context.botToken,
       channel: event.channel,
+      thread_ts: event.ts,
+      text: '',
       blocks: blockMessage,
-      thread_ts: event.thread_ts,
-      text: 'hoge',
     })
   } catch (error) {
     throw error(error)
