@@ -1,0 +1,32 @@
+{
+  "name": "smarthr-textlint-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "run-p dev:*",
+    "dev:ts": "tsc -w -p tsconfig.json",
+    "dev:watch": "nodemon --config nodemon.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/bolt": "^3.3.0",
+    "@slack/logger": "^3.0.0",
+    "dotenv": "^8.2.0",
+    "textlint": "^11.9.0",
+    "textlint-rule-preset-smarthr": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.41",
+    "eslint": "^7.24.0",
+    "eslint-config-smarthr": "^5.0.3",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-smarthr": "^1.0.0",
+    "stylelint-config-standard": "^21.0.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  }
+}

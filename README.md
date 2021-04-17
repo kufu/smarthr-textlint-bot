@@ -1,0 +1,1 @@
+# smarthr-textlint-bot
