@@ -1,18 +1,26 @@
 {
   "name": "smarthr-textlint-bot",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "文書校正ができるSlackbot",
+  "main": "dist/app.js",
+  "homepage": "https://github.com/kufu/smarthr-textlint-bot#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kufu/smarthr-textlint-bot.git"
+  },
   "scripts": {
     "dev": "run-p dev:*",
-    "dev:ts": "tsc -w -p tsconfig.json",
-    "dev:watch": "nodemon --config nodemon.json"
+    "dev:ts": "tsc --watch",
+    "dev:watch": "nodemon --config nodemon.json",
+    "build": "tsc --build",
+    "serve": "node dist/app.js",
+    "clean": "rimraf dist/*",
+    "start": "run-s clean build serve"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@slack/bolt": "^3.3.0",
-    "@slack/logger": "^3.0.0",
     "dotenv": "^8.2.0",
     "textlint": "^11.9.0",
     "textlint-rule-preset-smarthr": "^1.2.0"

@@ -14,19 +14,19 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
 })
 
-// Textlintの初期化
+// textlintの初期化
 const engine = new TextFixEngine({
   configFile: path.join(__dirname, '../.textlintrc.json'),
 })
 
-// メンション（@textlint）によるlint実行
+// メンション（@textlint）をトリガーとしたイベント実行
 app.event('app_mention', async ({ event, context }) => {
-  let blockMessage: Blocks = [
+  let blocks: Blocks = [
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '文書チェックが完了しました！',
+        text: '文書チェックが完了しました:tada:',
       },
     },
     {
@@ -36,7 +36,7 @@ app.event('app_mention', async ({ event, context }) => {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '*文書チェック結果:*',
+        text: '*文書のチェック結果:*',
       },
     },
   ]
@@ -44,14 +44,11 @@ app.event('app_mention', async ({ event, context }) => {
   try {
     const fixResults = await engine.executeOnText(event.text)
     if (engine.isErrorResults(fixResults)) {
-      blockMessage = [
-        ...blockMessage,
+      blocks = [
+        ...blocks,
         {
           type: 'section',
           text: { type: 'mrkdwn', text: formatResults(fixResults) },
-        },
-        {
-          type: 'divider',
         },
         {
           type: 'section',
@@ -67,21 +64,11 @@ app.event('app_mention', async ({ event, context }) => {
             text: fixResults[0].output,
           },
         },
-        {
-          type: 'context',
-          elements: [
-            {
-              type: 'mrkdwn',
-              text:
-                '※この文書は<https://github.com/kufu/textlint-rule-preset-smarthr|textlint-rule-preset-smarthr>のルールに基づき、自動修正しています。',
-            },
-          ],
-        },
       ]
     } else {
-      blockMessage.push({
+      blocks.push({
         type: 'section',
-        text: { type: 'mrkdwn', text: 'エラーは見つかりませんでした:+1:' },
+        text: { type: 'mrkdwn', text: '入力された文書にエラーは見つかりませんでした:+1:' },
       })
     }
 
@@ -90,7 +77,19 @@ app.event('app_mention', async ({ event, context }) => {
       channel: event.channel,
       thread_ts: event.ts,
       text: '',
-      blocks: blockMessage,
+      blocks: [
+        ...blocks,
+        {
+          type: 'context',
+          elements: [
+            {
+              type: 'mrkdwn',
+              text:
+                '※<https://github.com/kufu/textlint-rule-preset-smarthr|textlintのSmartHR用ルールプリセット>を使ってチェック・自動修正の提案をしています。',
+            },
+          ],
+        },
+      ],
     })
   } catch (error) {
     throw error(error)
