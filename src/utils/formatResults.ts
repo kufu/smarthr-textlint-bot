@@ -11,7 +11,7 @@ export default (results: TextlintResult[]) => {
     } else {
       severity = 'warning'
     }
-    output += `${message.line}:${message.column}[${severity}] ${message.message}\n`
+    output += `[${message.line}:${message.column} ${severity}] ${message.message}\n`
   })
   return '```\n' + `${output}` + '```\n'
 }
