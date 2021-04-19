@@ -8,6 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/kufu/smarthr-textlint-bot.git"
   },
+  "setup": "yarn",
   "scripts": {
     "dev": "run-p dev:*",
     "dev:ts": "tsc --watch",
