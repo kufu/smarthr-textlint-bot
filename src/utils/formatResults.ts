@@ -5,7 +5,13 @@ export default (results: TextlintResult[]) => {
   let output = ''
 
   messages.forEach((message) => {
-    output += `${message.line}:${message.column} ${message.message}\n`
+    let severity = ''
+    if ((message as any).fatal || message.severity === 2) {
+      severity = 'error'
+    } else {
+      severity = 'warning'
+    }
+    output += `${message.line}:${message.column}[${severity}] ${message.message}\n`
   })
   return '```\n' + `${output}` + '```\n'
 }
