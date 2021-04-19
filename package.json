@@ -13,10 +13,7 @@
     "dev": "run-p dev:*",
     "dev:ts": "tsc --watch",
     "dev:watch": "nodemon --config nodemon.json",
-    "build": "tsc --build",
-    "serve": "node dist/app.js",
-    "clean": "rimraf dist/*",
-    "start": "run-s clean build serve"
+    "build": "tsc --build"
   },
   "author": "",
   "license": "ISC",
