@@ -18,14 +18,14 @@ bot開発には[Bolt](https://github.com/slackapi/bolt-js)を使っています�
   * `brew install ngrok`のインストールを推奨します。
 * 別のターミナルで`ngrok http 3000`を実行して公開エンドポイントを立ち上げる
 
-### `.env`を配置して Bot Token と Signing Secretを設定
+#### `.env`を配置して Bot Token と Signing Secretを設定
 
 ```:.env
 SLACK_BOT_TOKEN=xoxb-111-111-xxx
 SLACK_SIGNING_SECRET=xxx
 ```
 
-### ローカルアプリを起動
+#### ローカルアプリを起動
 
 ```
 node --version # v10.13.0 以上
@@ -33,7 +33,7 @@ yarn
 yarn dev` # 起動すると http://localhost:3000/slack/events でリクエストを受け付けます
 ```
 
-### `ngrok`を`Slack`からのリクエストをフォワードするために起動
+#### `ngrok`を`Slack`からのリクエストをフォワードするために起動
 ngrok をまだインストールしていなければ、ダウンロードして設定します。以下のステップで、適切に設定できたか確認します。
 
 ```
@@ -52,4 +52,21 @@ curl -I -XPOST https://{your random subdomain here}.ngrok.io/slack/events # HTTP
 
 ### デプロイ方法
 
-https://slack.dev/bolt-js/ja-jp/deployments/heroku
+* Heroku CLIをインストール、`heroku help`でインストールされているか確認
+* `heroku login`でログイン、`heroku auth:whoami`でログインできるているか確認
+* Herokuのデプロイ先を設定
+* 更新や修正を行ってoriginにpushする
+* `git push heroku main`を実行し、Herokuにdeployする
+
+詳細な手順: https://slack.dev/bolt-js/ja-jp/deployments/heroku
+
+#### Heroku CLIをインストール
+
+```
+brew install heroku/brew/heroku
+```
+#### Herokuのデプロイ先指定
+
+```
+heroku git:remote -a smarthr-textlint-bot-staging`
+```
