@@ -57,6 +57,7 @@ curl -I -XPOST https://{your random subdomain here}.ngrok.io/slack/events # HTTP
 * Herokuのデプロイ先を設定
 * 更新や修正を行ってoriginにpushする
 * `git push heroku main`を実行し、Herokuにdeployする
+* 完了
 
 詳細な手順: https://slack.dev/bolt-js/ja-jp/deployments/heroku
 
@@ -68,5 +69,5 @@ brew install heroku/brew/heroku
 #### Herokuのデプロイ先指定
 
 ```
-heroku git:remote -a smarthr-textlint-bot-staging`
+heroku git:remote -a smarthr-textlint-bot-staging
 ```
