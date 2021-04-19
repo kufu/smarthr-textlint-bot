@@ -42,8 +42,16 @@ app.event('app_mention', async ({ event, context }) => {
   ]
 
   try {
-    const fixResults = await engine.executeOnText(event.text)
-    if (engine.isErrorResults(fixResults)) {
+    const regex = /^<@(.+?)>/g // memo: 最初の@textlintを除外する正規表現 https://www-creators.com/tool/regex-checker?r=%5E%3C%40(.%2B%3F)%3E
+    const replaceText = event.text.replace(regex, '')
+    const fixResults = await engine.executeOnText(replaceText)
+
+    if (replaceText.length === 0) {
+      blocks.push({
+        type: 'section',
+        text: { type: 'mrkdwn', text: 'おや？テキストの指定が無いですね。' },
+      })
+    } else if (engine.isErrorResults(fixResults)) {
       blocks = [
         ...blocks,
         {
