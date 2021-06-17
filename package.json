@@ -20,7 +20,7 @@
   "dependencies": {
     "@slack/bolt": "^3.4.0",
     "dotenv": "^8.2.0",
-    "textlint": "^11.9.0",
+    "textlint": "^12.0.0",
     "textlint-rule-preset-smarthr": "^1.2.0"
   },
   "devDependencies": {
