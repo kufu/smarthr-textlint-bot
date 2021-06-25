@@ -4746,10 +4746,10 @@ textlint-rule-no-nfd@^1.0.2:
     textlint-rule-helper "^2.1.1"
     unorm "^1.4.1"
 
-textlint-rule-preset-smarthr@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/textlint-rule-preset-smarthr/-/textlint-rule-preset-smarthr-1.2.0.tgz#7e2aa40b6e403bc6a6927da54028aac9d770183b"
-  integrity sha512-opPBY/iThLpNprSRHaiBgWcyp35yioPSoOIHEvYLfF2AjJF4/85Se5+8ayUmyVIEjT1hfxGF4ypy/soSPx8+rQ==
+textlint-rule-preset-smarthr@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/textlint-rule-preset-smarthr/-/textlint-rule-preset-smarthr-1.4.0.tgz#37c137a3c88a95451168fb9efc3e5e27e1bc445b"
+  integrity sha512-dCsjePpYcqDtGYEdxJRQcrY8kNmY7vxnz8ap0PbDqJnol9YxywEL+5uNEicighuU0xK1zmKLvv8IX+KnOAv37Q==
   dependencies:
     "@textlint-rule/textlint-rule-no-unmatched-pair" "^1.0.7"
     "@textlint/module-interop" "^1.2.2"
