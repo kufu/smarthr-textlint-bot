@@ -92,15 +92,14 @@ app.event('app_mention', async ({ event, context }) => {
           elements: [
             {
               type: 'mrkdwn',
-              text:
-                '※<https://github.com/kufu/textlint-rule-preset-smarthr|textlintのSmartHR用ルールプリセット>を使ってチェック・自動修正の提案をしています。',
+              text: '※<https://github.com/kufu/textlint-rule-preset-smarthr|textlintのSmartHR用ルールプリセット>を使ってチェック・自動修正の提案をしています。',
             },
           ],
         },
       ],
     })
   } catch (error) {
-    throw error(error)
+    throw console.log(error)
   }
 })
 ;(async () => {
