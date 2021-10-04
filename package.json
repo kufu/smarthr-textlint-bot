@@ -21,7 +21,7 @@
     "@slack/bolt": "^3.7.0",
     "dotenv": "^10.0.0",
     "textlint": "^12.0.2",
-    "textlint-rule-preset-smarthr": "^1.7.1"
+    "textlint-rule-preset-smarthr": "1.5.0"
   },
   "devDependencies": {
     "@types/node": "^16.10.1",
