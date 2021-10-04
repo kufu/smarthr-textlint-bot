@@ -1,5 +1,9 @@
 {
   "rules": {
-    "preset-smarthr": true
+    "preset-smarthr": {
+      "ja-keishikimeishi": {
+        "detection_hou_kata": false
+      }
+    }
   }
 }
