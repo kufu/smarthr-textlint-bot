@@ -15,9 +15,6 @@
     "dev:watch": "nodemon --config nodemon.json",
     "build": "tsc --build"
   },
-  "engines": {
-    "node": "14.x"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
