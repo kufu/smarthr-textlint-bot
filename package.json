@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@slack/bolt": "^3.7.0",
+    "@slack/bolt": "^3.8.1",
     "dotenv": "^10.0.0",
     "textlint": "^12.0.2",
     "textlint-rule-preset-smarthr": "1.5.0"
