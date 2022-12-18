@@ -1,0 +1,19 @@
+service: textlint-bot
+frameworkVersion: '3'
+useDotenv: true
+provider:
+  name: aws
+  region: ap-northeast-1
+  runtime: nodejs16.x
+  environment:
+    SLACK_SIGNING_SECRET: ${env:SLACK_SIGNING_SECRET}
+    SLACK_BOT_TOKEN: ${env:SLACK_BOT_TOKEN}
+functions:
+  slack:
+    handler: dist/app.handler
+    events:
+      - http:
+          path: slack/events
+          method: post
+plugins:
+  - serverless-offline

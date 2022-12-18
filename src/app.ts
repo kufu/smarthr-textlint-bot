@@ -1,18 +1,44 @@
-import { App, LogLevel, KnownBlock, Block } from '@slack/bolt'
+import { App, LogLevel, KnownBlock, Block, AwsLambdaReceiver } from '@slack/bolt'
 import { TextFixEngine } from 'textlint'
 import * as path from 'path'
-require('dotenv').config()
+// require('dotenv').config()
 
 import formatResults from './utils/formatResults'
 
 type Blocks = (KnownBlock | Block)[]
 
+const secret: string = process.env.SLACK_SIGNING_SECRET as string
+
+const awsLambdaReceiver = new AwsLambdaReceiver({
+  signingSecret: secret,
+})
+
 // アプリの初期化
 const app = new App({
   logLevel: LogLevel.DEBUG,
   token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  receiver: awsLambdaReceiver,
 })
+
+/* @ts-ignore */
+module.exports.handler = async (event, context, callback) => {
+  // console.log(event.body)
+  // console.log(event.headers)
+  // const obj = JSON.parse(event.body);
+  // if (obj.challenge) {
+  //     return {
+  //       statusCode: 200,
+  //       body: JSON.stringify({
+  //         challenge: obj.challenge,
+  //       }),
+  //   }
+  // }
+  if (event.headers['X-Slack-Retry-Num']) {
+    return { statusCode: 200, body: JSON.stringify({ message: 'No need to resend' }) }
+  }
+  const handler = await awsLambdaReceiver.start()
+  return handler(event, context, callback)
+}
 
 // textlintの初期化
 const engine = new TextFixEngine({
@@ -20,7 +46,9 @@ const engine = new TextFixEngine({
 })
 
 // メンション（@textlint）をトリガーとしたイベント実行
+/* @ts-ignore */
 app.event('app_mention', async ({ event, context }) => {
+
   let blocks: Blocks = [
     {
       type: 'section',
@@ -80,7 +108,7 @@ app.event('app_mention', async ({ event, context }) => {
       })
     }
 
-    app.client.chat.postMessage({
+   app.client.chat.postMessage({
       token: context.botToken,
       channel: event.channel,
       thread_ts: event.ts,
@@ -102,8 +130,3 @@ app.event('app_mention', async ({ event, context }) => {
     throw console.log(error)
   }
 })
-;(async () => {
-  // Start your app
-  await app.start(Number(process.env.PORT) || 3000)
-  console.log('⚡️ Bolt app is running!')
-})()

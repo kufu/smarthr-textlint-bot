@@ -53,27 +53,17 @@ curl -I -XPOST https://{your random subdomain here}.ngrok.io/slack/events # HTTP
 
 ### デプロイ方法
 
-- Heroku CLI をインストール、`heroku help`でインストールされているか確認
-- `heroku login`でログイン、`heroku auth:whoami`でログインできるているか確認
-- Heroku のデプロイ先を設定
-- 更新や修正を行って origin に push する
-- `git push heroku main`を実行し、Heroku に deploy する
-- 完了
-
-詳細な手順: https://slack.dev/bolt-js/ja-jp/deployments/heroku
-
-#### Heroku CLIをインストール
-
 ```
-brew install heroku/brew/heroku
+$ sls deploy --aws-profile {your-profile}
 ```
 
-#### Heroku のデプロイ先指定
+### 必要な権限
 
-```
-heroku git:remote -a smarthr-textlint-bot-staging
-```
-
-#### HerokuへDeploy
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+- OAuth & Permissions
+  - app_mentions:read
+  - channels:history
+  - channels:join
+  - chat:write
+  - im:history
+- Event Subscriptions
+  - app_mention
