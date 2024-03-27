@@ -25,8 +25,8 @@
   },
   "devDependencies": {
     "@types/node": "^16.10.3",
-    "eslint": "^7.32.0",
-    "eslint-config-smarthr": "^5.0.3",
+    "eslint": "^8.57.0",
+    "eslint-config-smarthr": "^6.24.0",
     "nodemon": "^2.0.13",
     "npm-run-all": "^4.1.5",
     "stylelint-config-prettier": "^8.0.2",
